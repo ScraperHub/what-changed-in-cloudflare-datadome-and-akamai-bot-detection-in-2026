@@ -1,0 +1,6 @@
+# Replace these with pages you are authorized to collect.
+# https://example.com is safe for the optional live test.
+https://example.com/
+https://example.com/pricing
+https://example.com/docs
+https://example.com/products/widget

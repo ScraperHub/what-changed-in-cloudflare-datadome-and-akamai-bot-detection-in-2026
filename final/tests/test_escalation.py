@@ -8,7 +8,7 @@ EXPECTED = [
     (521, "backoff_target_down", True, False, None, None),
     (522, "backoff_or_country", True, False, None, None),
     (523, "reroute_country", True, False, None, None),
-    (525, "escalate_javascript", False, True, None, None),
+    (525, "escalate_javascript", False, True, 2000, True),
     (595, "selector_not_found", False, False, None, None),
     (599, "retry_or_support", True, False, None, None),
 ]
@@ -43,6 +43,8 @@ def test_525_after_javascript_retries_without_escalation():
     assert plan.code == "retry_javascript_or_support"
     assert plan.retry is True
     assert plan.escalate_javascript is False
+    assert plan.page_wait_ms is None
+    assert plan.ajax_wait is None
 
 
 def test_challenge_on_200_escalates_without_inventing_waits():

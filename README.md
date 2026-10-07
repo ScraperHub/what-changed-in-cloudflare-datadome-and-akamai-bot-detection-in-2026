@@ -28,6 +28,7 @@ python steps/step_02_inspect_response.py --dry-run
 python steps/step_03_classify_response.py --dry-run
 python steps/step_04_escalate_on_failure.py --dry-run
 python steps/step_05_sample_evaluation.py --dry-run
+python steps/step_06_route_by_domain.py --dry-run
 ```
 
 Each numbered file mirrors the matching walkthrough section. `--help` on any step also runs without a token.
@@ -74,11 +75,13 @@ python ..\steps\step_01_first_request.py --url https://example.com/
 | 521 | Target unreachable: retry with backoff; verify that the target is up if it persists. |
 | 522 | Connection timeout: retry with backoff; consider `country` only for a geo-dependent target. |
 | 523 | Retry without `country`, or choose a different country. |
-| 525 | Switch to the JavaScript token. If it persists, retry once, then contact support. |
+| 525 | Switch to the JavaScript token and set `page_wait` (2000 ms) and `ajax_wait`. If it persists, retry once, then contact support. |
 | 595 | Correct the missing CSS selector or add a fallback. Do not retry unchanged. |
 | 599 | Retry; if it persists, contact support with the request ID. |
 
 Retry overhead counts those fetch-layer retries and JavaScript escalations, per usable row. Usable means the label was `ok`.
+
+`route_domain()` keeps a domain on Smart AI Proxy (`smartproxy.crawlbase.com:8013`) until that hostname has recorded three challenge responses, then returns `api`. It does not open a proxy connection. Step 6 prints the choice.
 
 Billing is not identical to HTTP success. Crawlbase documents that failed requests are not charged, but successful target `404` and `410` responses can be billable. Enterprise Crawler webhook-delivery retries are also charged. Confirm current terms on the pricing and Crawler documentation pages before a large run.
 

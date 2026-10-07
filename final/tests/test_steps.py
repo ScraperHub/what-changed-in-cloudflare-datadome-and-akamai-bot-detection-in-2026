@@ -12,6 +12,7 @@ STEPS = [
     CODE / "steps" / "step_03_classify_response.py",
     CODE / "steps" / "step_04_escalate_on_failure.py",
     CODE / "steps" / "step_05_sample_evaluation.py",
+    CODE / "steps" / "step_06_route_by_domain.py",
 ]
 
 
@@ -59,6 +60,10 @@ def test_step_dry_run(script, tmp_path):
         for status in ("422", "520", "521", "522", "523", "525", "595", "599"):
             assert status in result.stdout
         assert "confirmed_block" in result.stdout
+    if script.stem == "step_06_route_by_domain":
+        assert "smartproxy.crawlbase.com:8013" in result.stdout
+        assert "before proxy" in result.stdout
+        assert "after api" in result.stdout
     if script.stem == "step_05_sample_evaluation":
         assert "usable_rate" in result.stdout
         assert "p50_ms" in result.stdout

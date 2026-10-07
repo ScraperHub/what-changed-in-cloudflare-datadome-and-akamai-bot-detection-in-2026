@@ -190,7 +190,7 @@ def test_520_escalates_once_without_waits():
     assert rows[0].action == "stop_after_javascript"
 
 
-def test_525_escalates_without_automatic_waits():
+def test_525_escalates_with_render_waits():
     url = "https://example.com/challenge"
     challenge = (
         "<html><script src='/cdn-cgi/challenge-platform/h/g/orchestrate/jsch/v1'></script></html>"
@@ -200,8 +200,8 @@ def test_525_escalates_without_automatic_waits():
     rows = evaluate_urls(client, [url], FIELDS, sleeper=lambda _seconds: None)
     assert len(client.calls) == 2
     assert client.calls[1][1]["javascript"] is True
-    assert client.calls[1][1]["page_wait_ms"] is None
-    assert client.calls[1][1]["ajax_wait"] is None
+    assert client.calls[1][1]["page_wait_ms"] == 2000
+    assert client.calls[1][1]["ajax_wait"] is True
     assert rows[0].usable is True
     assert rows[0].js_escalations == 1
     assert rows[0].classification == "ok"

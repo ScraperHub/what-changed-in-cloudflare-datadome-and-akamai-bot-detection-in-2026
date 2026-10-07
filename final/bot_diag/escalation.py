@@ -4,8 +4,9 @@ Status meanings follow the Crawling API guidance checked for this article:
 422 fix URL encoding and do not retry; 520 switch to the JavaScript token;
 521 retry with backoff; 522 retry with backoff and consider country only for
 geo-dependent targets; 523 remove or change country; 525 switch to the
-JavaScript token, then retry or contact support; 595 fix the selector;
-599 retry or contact support with the request ID.
+JavaScript token and set page_wait (2000 ms) plus ajax_wait, then retry or
+contact support; 595 fix the selector; 599 retry or contact support with
+the request ID.
 
 Retry applies to those fetch-layer failures only. A confirmed block is never
 retried, whatever ``cb_status`` arrived with it.
@@ -85,9 +86,9 @@ _STATUS_ACTIONS: dict[int, _StatusAction] = {
         "escalate_javascript",
         False,
         True,
-        None,
-        None,
-        "Challenge unsolved. Switch to the JavaScript token; then retry or contact support if it persists.",
+        2000,
+        True,
+        "Challenge unsolved. Switch to the JavaScript token and set page_wait and ajax_wait; then retry or contact support if it persists.",
     ),
     595: _StatusAction(
         "selector_not_found",
